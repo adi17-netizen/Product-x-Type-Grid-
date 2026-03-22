@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Startup Matrix</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      /* Anthropic brand */
+      --dark:       #141413;
+      --light:      #faf9f5;
+      --mid-gray:   #b0aea5;
+      --light-gray: #e8e6dc;
+      --orange:     #d97757;
+      --blue:       #6a9bcc;
+      --green:      #788c5d;
+    }
+
+    [data-theme="light"] {
+      --bg:         #faf9f5;
+      --bg2:        #f2f0e8;
+      --surface:    #ffffff;
+      --surface2:   #f2f0e8;
+      --border:     #e8e6dc;
+      --border2:    #d4d1c7;
+      --text:       #141413;
+      --text2:      #4a4845;
+      --muted:      #b0aea5;
+      --accent:     #d97757;
+      --accent-bg:  rgba(217, 119, 87, 0.08);
+      --accent-border: rgba(217, 119, 87, 0.35);
+    }
+
+    [data-theme="dark"] {
+      --bg:         #141413;
+      --bg2:        #1c1b19;
+      --surface:    #1e1d1b;
+      --surface2:   #252420;
+      --border:     #2e2c29;
+      --border2:    #3a3835;
+      --text:       #faf9f5;
+      --text2:      #c8c5bc;
+      --muted:      #6b6860;
+      --accent:     #d97757;
+      --accent-bg:  rgba(217, 119, 87, 0.1);
+      --accent-border: rgba(217, 119, 87, 0.4);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Lora', Georgia, serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      transition: background 0.25s, color 0.25s;
+    }
+
+    /* HEADER */
+    header {
+      width: 100%;
+      padding: 20px 40px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      background: var(--bg);
+      z-index: 10;
+      transition: background 0.25s, border-color 0.25s;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .logo-mark {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: var(--accent);
+      display: flex; align-items: center; justify-content: center;
+    }
+
+    .logo-mark svg { width: 14px; height: 14px; fill: white; }
+
+    .logo-text {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .source-link {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--muted);
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      transition: color 0.2s;
+    }
+
+    .source-link:hover { color: var(--accent); }
+    .source-link svg { width: 11px; height: 11px; }
+
+    .theme-toggle {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--text2);
+      transition: all 0.2s;
+    }
+
+    .theme-toggle:hover { border-color: var(--accent); color: var(--accent); }
+    .theme-toggle svg { width: 14px; height: 14px; }
+
+    /* MAIN */
+    main {
+      width: 100%;
+      max-width: 960px;
+      padding: 56px 24px 80px;
+      display: flex;
+      flex-direction: column;
+      gap: 48px;
+    }
+
+    /* HERO */
+    .hero {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+
+    .hero-text h2 {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 38px;
+      font-weight: 700;
+      letter-spacing: -0.025em;
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    .hero-text h2 em {
+      font-style: normal;
+      color: var(--accent);
+    }
+
+    .hero-text p {
+      font-size: 15px;
+      color: var(--text2);
+      line-height: 1.65;
+      margin-top: 8px;
+      max-width: 480px;
+    }
+
+    /* INPUT */
+    .input-row {
+      display: flex;
+      gap: 10px;
+      max-width: 580px;
+    }
+
+    .input-row input {
+      flex: 1;
+      background: var(--surface);
+      border: 1px solid var(--border2);
+      color: var(--text);
+      padding: 13px 18px;
+      border-radius: 8px;
+      font-size: 14px;
+      font-family: 'Lora', Georgia, serif;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-row input::placeholder { color: var(--muted); }
+    .input-row input:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+
+    .btn-analyze {
+      background: var(--accent);
+      color: #fff;
+      border: none;
+      padding: 13px 26px;
+      border-radius: 8px;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: opacity 0.2s, transform 0.1s;
+      white-space: nowrap;
+      letter-spacing: 0.01em;
+    }
+
+    .btn-analyze:hover { opacity: 0.88; }
+    .btn-analyze:active { transform: scale(0.98); }
+    .btn-analyze:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* LOADING */
+    .loading {
+      display: none;
+      align-items: center;
+      gap: 12px;
+      padding: 16px 0;
+    }
+
+    .spinner {
+      width: 18px; height: 18px;
+      border: 2px solid var(--border2);
+      border-top-color: var(--accent);
+      border-radius: 50%;
+      animation: spin 0.75s linear infinite;
+      flex-shrink: 0;
+    }
+
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .loading p {
+      font-size: 13px;
+      color: var(--muted);
+      font-style: italic;
+    }
+
+    /* ERROR */
+    .error-msg {
+      display: none;
+      background: rgba(217, 87, 87, 0.07);
+      border: 1px solid rgba(217, 87, 87, 0.3);
+      border-radius: 8px;
+      padding: 14px 18px;
+      font-size: 13px;
+      color: #c0392b;
+      max-width: 580px;
+      line-height: 1.5;
+    }
+
+    /* DIVIDER */
+    .divider {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: var(--muted);
+      font-size: 11px;
+      font-family: 'Poppins', Arial, sans-serif;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+    }
+
+    .divider::before, .divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    /* RESULT PANEL */
+    #result {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+    }
+
+    /* DEMO BANNER */
+    .demo-banner {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent-bg);
+      border: 1px solid var(--accent-border);
+      border-radius: 8px;
+      padding: 10px 16px;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 12px;
+      color: var(--accent);
+      font-weight: 500;
+    }
+
+    .demo-banner svg { width: 14px; height: 14px; flex-shrink: 0; }
+
+    /* COMPANY ROW */
+    .company-row {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 20px;
+      flex-wrap: wrap;
+    }
+
+    .company-info h3 {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text);
+    }
+
+    .company-info p {
+      font-size: 14px;
+      color: var(--text2);
+      margin-top: 4px;
+      font-style: italic;
+    }
+
+    .cell-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--accent-bg);
+      border: 1px solid var(--accent-border);
+      border-radius: 8px;
+      padding: 10px 18px;
+      flex-shrink: 0;
+    }
+
+    .cell-badge .cell-name {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 15px;
+      font-weight: 700;
+      color: var(--accent);
+    }
+
+    .cell-badge .launch-tag {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      background: var(--accent);
+      color: #fff;
+      border-radius: 4px;
+      padding: 3px 9px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+
+    /* SECTION LABEL */
+    .section-label {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 600;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    /* MATRIX */
+    .matrix-wrap {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+
+    .y-axis-label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .matrix-inner { flex: 1; }
+
+    .x-labels {
+      display: grid;
+      grid-template-columns: 88px repeat(3, 1fr);
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+
+    .x-label {
+      font-family: 'Poppins', Arial, sans-serif;
+      text-align: center;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding: 4px 0;
+    }
+
+    .grid-rows { display: flex; flex-direction: column; gap: 6px; }
+
+    .grid-row {
+      display: grid;
+      grid-template-columns: 88px repeat(3, 1fr);
+      gap: 6px;
+      align-items: stretch;
+    }
+
+    .row-label {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 10px;
+    }
+
+    .cell {
+      aspect-ratio: 1.5;
+      border-radius: 7px;
+      border: 1px solid transparent;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 3px;
+      padding: 8px 6px;
+      transition: all 0.2s;
+      position: relative;
+    }
+
+    .cell-lbl {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 8px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .cell-sub {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 8px;
+      font-weight: 800;
+      letter-spacing: 0.02em;
+    }
+
+    /* Active ring — white outline over the cell color */
+    .cell.active {
+      box-shadow: 0 0 0 2px #fff, 0 0 0 4px currentColor, 0 6px 24px rgba(0,0,0,0.18);
+      z-index: 1;
+      transform: scale(1.04);
+    }
+
+    /* CONFIDENCE */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      transition: background 0.25s, border-color 0.25s;
+    }
+
+    .card.full { grid-column: 1 / -1; }
+    .card.accent-card {
+      border-color: var(--accent-border);
+      background: var(--accent-bg);
+    }
+
+    .card-label {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .card.accent-card .card-label { color: var(--accent); opacity: 0.8; }
+
+    .card-value {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--text);
+      line-height: 1;
+    }
+
+    .card-tag {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+    }
+
+    .bar-track {
+      height: 3px;
+      background: var(--border2);
+      border-radius: 2px;
+      overflow: hidden;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: var(--accent);
+      border-radius: 2px;
+      transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .card-body {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.65;
+    }
+
+    .card-body.large {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* CHIPS */
+    .chip-row { display: flex; flex-wrap: wrap; gap: 7px; }
+
+    .chip {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      padding: 4px 12px;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--text2);
+    }
+
+    /* MISTAKE */
+    .card.mistake {
+      border-color: rgba(192, 57, 43, 0.25);
+      background: rgba(192, 57, 43, 0.04);
+    }
+
+    .card.mistake .card-label { color: #c0392b; }
+
+    /* FOOTER */
+    footer {
+      padding: 24px;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      width: 100%;
+      text-align: center;
+      letter-spacing: 0.02em;
+    }
+
+    @media (max-width: 640px) {
+      .two-col, .three-col { grid-template-columns: 1fr; }
+      .company-row { flex-direction: column; }
+      header { padding: 16px 20px; }
+      main { padding: 36px 16px 60px; }
+      .hero-text h2 { font-size: 28px; }
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <div class="logo">
+    <div class="logo-mark">
+      <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
+    </div>
+    <div class="logo-text">Startup Matrix</div>
+  </div>
+  <a class="source-link" href="https://sajithpai.com/which-of-these-9-product-x-market-type-categories-is-your-startup-in/" target="_blank" rel="noopener">
+    Read the framework
+    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H5M10 2v5"/></svg>
+  </a>
+  <button class="theme-toggle" onclick="toggleTheme()">
+    <svg id="themeIcon" viewBox="0 0 16 16" fill="currentColor">
+      <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM8 13A5 5 0 1 1 8 3a5 5 0 0 1 0 10z"/>
+    </svg>
+    <span id="themeLabel">Dark mode</span>
+  </button>
+</header>
+
+<main>
+
+  <!-- HERO + INPUT -->
+  <div class="hero">
+    <div class="hero-text">
+      <h2>Where does your startup <em>land?</em></h2>
+      <p>Enter a startup URL. We'll research it and place it on the Product × Market Type matrix to reveal your category, strategy, and launch approach.</p>
+    </div>
+    <div class="input-row">
+      <input type="text" id="urlInput" placeholder="e.g. stripe.com or notion.so" />
+      <button class="btn-analyze" id="analyzeBtn" onclick="analyze()">Analyze</button>
+    </div>
+    <div class="loading" id="loading">
+      <div class="spinner"></div>
+      <p>Researching startup and running analysis…</p>
+    </div>
+    <div class="error-msg" id="errorMsg"></div>
+  </div>
+
+  <div class="divider" id="resultDivider">Example · Stripe</div>
+
+  <!-- RESULT -->
+  <div id="result">
+
+    <div class="demo-banner" id="demoBanner">
+      <svg viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zm.75 10.5h-1.5v-5h1.5v5zm0-6.5h-1.5V3.5h1.5V5z"/></svg>
+      This is a pre-loaded example analysis for Stripe. Enter any URL above to analyze a different startup.
+    </div>
+
+    <div class="company-row">
+      <div class="company-info">
+        <h3 id="companyName">Stripe</h3>
+        <p id="tagline">Payment infrastructure for the internet — 7 lines of code to accept payments</p>
+      </div>
+      <div class="cell-badge">
+        <span class="cell-name" id="cellName">Painkiller × Orange Ocean</span>
+        <span class="launch-tag" id="launchTag">ETP</span>
+      </div>
+    </div>
+
+    <!-- MATRIX -->
+    <div>
+      <div class="section-label">Product × Market Grid</div>
+      <div class="matrix-wrap">
+        <div class="y-axis-label">Product Type</div>
+        <div class="matrix-inner">
+          <div class="x-labels">
+            <div></div>
+            <div class="x-label">Blue Ocean</div>
+            <div class="x-label">Orange Ocean</div>
+            <div class="x-label">Red Ocean</div>
+          </div>
+          <div class="grid-rows" id="gridRows"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CONFIDENCE -->
+    <div class="two-col">
+      <div class="card">
+        <div class="card-label">Product Classification</div>
+        <div class="card-value" id="productConf">92%</div>
+        <div class="card-tag" id="productType">Painkiller</div>
+        <div class="bar-track"><div class="bar-fill" id="productBar" style="width:92%"></div></div>
+        <p class="card-body" id="productReason">Developers at startups were wasting days wrangling connectors to PayPal and Authorize.net. Accepting payments online required PCI compliance and weeks of integration — a genuine hair-on-fire problem for any company wanting to transact online.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Market Classification</div>
+        <div class="card-value" id="marketConf">88%</div>
+        <div class="card-tag" id="marketType">Orange Ocean</div>
+        <div class="bar-track"><div class="bar-fill" id="marketBar" style="width:88%"></div></div>
+        <p class="card-body" id="marketReason">In 2010, PayPal and Authorize.net existed as incumbent payment processors, but no direct competitor offered a developer-first, API-native experience. Indirect competition existed; a direct comparator did not — classic Orange Ocean.</p>
+      </div>
+    </div>
+
+    <!-- KEY INSIGHT -->
+    <div class="card accent-card">
+      <div class="card-label">Key Insight</div>
+      <p class="card-body large" id="keyInsight">Stripe didn't enter payments — they entered developer experience. By ensuring card data never touched the merchant's servers and enabling payments in minutes with transparent pricing, they found a wedge incumbents were structurally unable to close.</p>
+    </div>
+
+    <!-- PLAYBOOK + VC + WEDGE -->
+    <div class="three-col">
+      <div class="card">
+        <div class="card-label">Playbook</div>
+        <p class="card-body" id="playbook">Launch a narrow product delivering the atomic unit of value: accept a payment. No subscriptions, no invoicing, no international support — just butter-smooth integration in 7 lines of code. Let desperate customers do the validation.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">VC Pitch Angle</div>
+        <p class="card-body" id="vcPitch">Show the manual workarounds developers use today — days of wrangling, PCI compliance burden, opaque pricing. Show willingness to pay. Demonstrate the atomic unit working end-to-end in minutes.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Wedge Opportunity</div>
+        <p class="card-body" id="wedge">Developer-first startups who found incumbent payment processors too painful to integrate — a segment incumbents were structurally unable to serve due to their enterprise-first, sales-led model.</p>
+      </div>
+    </div>
+
+    <!-- MISTAKE + COMPETITORS -->
+    <div class="two-col">
+      <div class="card mistake">
+        <div class="card-label">Founder Mistake to Avoid</div>
+        <p class="card-body" id="founderMistake">Overbuilding before validation. Stripe launched US-only, with no subscriptions, no invoicing, and limited fraud detection. The pain was real enough that a narrow product was sufficient — resist the urge to build everything first.</p>
+      </div>
+      <div class="card">
+        <div class="card-label">Known Competitors</div>
+        <div class="chip-row" id="competitors">
+          <span class="chip">PayPal</span>
+          <span class="chip">Authorize.net</span>
+          <span class="chip">Braintree</span>
+          <span class="chip">WePay</span>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer>Based on the Product × Market Type framework · <a href="https://sajithpai.com/which-of-these-9-product-x-market-type-categories-is-your-startup-in/" target="_blank" rel="noopener" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">Read the original article</a></footer>
+
+<script>
+  const GRID = [
+    { row: "Painkiller", cols: ["Blue Ocean","Orange Ocean","Red Ocean"], launches: ["ETP","ETP","EUP"] },
+    { row: "Toothpick",  cols: ["Blue Ocean","Orange Ocean","Red Ocean"], launches: ["ELP","EUP/ELP","EUP"] },
+    { row: "Vitamin",    cols: ["Blue Ocean","Orange Ocean","Red Ocean"], launches: ["ELP","Full Prod","Full Prod"] },
+  ];
+
+  // Color per cell: bg, text, border — green (best) → amber → red (hardest)
+  const CELL_COLORS = {
+    "Painkiller|Blue Ocean":    { bg: "#d4edda", text: "#1a5c2e", border: "#a8d5b5" }, // deep green — rarest, best
+    "Painkiller|Orange Ocean":  { bg: "#c8e6c9", text: "#2e7d32", border: "#a5d6a7" }, // green — very attractive
+    "Painkiller|Red Ocean":     { bg: "#fff9c4", text: "#7a6000", border: "#ffe082" }, // yellow — competitive but viable
+    "Toothpick|Blue Ocean":     { bg: "#fff3e0", text: "#7a4200", border: "#ffcc80" }, // amber — needs delight
+    "Toothpick|Orange Ocean":   { bg: "#ffe0b2", text: "#7a3e00", border: "#ffb74d" }, // warm amber — middle ground
+    "Toothpick|Red Ocean":      { bg: "#ffe0b2", text: "#7a3e00", border: "#ffb74d" }, // warm amber — need wedge
+    "Vitamin|Blue Ocean":       { bg: "#fce4c8", text: "#7a3000", border: "#f4a460" }, // light coral — harder
+    "Vitamin|Orange Ocean":     { bg: "#ffd5c0", text: "#7a2800", border: "#ef9070" }, // coral-red — tough
+    "Vitamin|Red Ocean":        { bg: "#ffc8b8", text: "#7a1a00", border: "#e8705a" }, // red — hardest
+  };
+
+  function buildGrid(productType, marketType) {
+    const container = document.getElementById("gridRows");
+    container.innerHTML = "";
+    GRID.forEach(({ row, cols, launches }) => {
+      const rowEl = document.createElement("div");
+      rowEl.className = "grid-row";
+      const label = document.createElement("div");
+      label.className = "row-label";
+      label.textContent = row;
+      rowEl.appendChild(label);
+      cols.forEach((col, i) => {
+        const key = `${row}|${col}`;
+        const color = CELL_COLORS[key] || { bg: "#f0f0f0", text: "#555", border: "#ccc" };
+        const isActive = row === productType && col === marketType;
+        const cell = document.createElement("div");
+        cell.className = "cell" + (isActive ? " active" : "");
+        cell.style.background = color.bg;
+        cell.style.borderColor = color.border;
+        cell.style.color = color.text;
+        if (isActive) cell.style.boxShadow = `0 0 0 2px #fff, 0 0 0 4px ${color.border}, 0 6px 24px rgba(0,0,0,0.15)`;
+        cell.innerHTML = `<span class="cell-lbl" style="color:${color.text}">${row}<br>${col}</span><span class="cell-sub" style="color:${color.text}">${launches[i]}</span>`;
+        rowEl.appendChild(cell);
+      });
+      container.appendChild(rowEl);
+    });
+  }
+
+  // Build demo grid on load
+  buildGrid("Painkiller", "Orange Ocean");
+
+  function populate(data, isDemo) {
+    document.getElementById("demoBanner").style.display = isDemo ? "flex" : "none";
+    document.getElementById("resultDivider").textContent = isDemo ? "Example · Stripe" : "Analysis Result";
+    document.getElementById("companyName").textContent = data.company_name || "—";
+    document.getElementById("tagline").textContent = data.tagline || "";
+    document.getElementById("cellName").textContent = data.cell || "—";
+    document.getElementById("launchTag").textContent = data.launch_strategy || "";
+
+    buildGrid(data.product_type, data.market_type);
+
+    const pc = data.product_confidence || 0;
+    const mc = data.market_confidence || 0;
+    document.getElementById("productConf").textContent = pc + "%";
+    document.getElementById("marketConf").textContent = mc + "%";
+    document.getElementById("productType").textContent = data.product_type || "";
+    document.getElementById("marketType").textContent = data.market_type || "";
+    document.getElementById("productReason").textContent = data.product_reasoning || "";
+    document.getElementById("marketReason").textContent = data.market_reasoning || "";
+
+    setTimeout(() => {
+      document.getElementById("productBar").style.width = pc + "%";
+      document.getElementById("marketBar").style.width = mc + "%";
+    }, 100);
+
+    document.getElementById("keyInsight").textContent = data.key_insight || "";
+    document.getElementById("playbook").textContent = data.playbook || "";
+    document.getElementById("vcPitch").textContent = data.vc_pitch || "";
+    document.getElementById("wedge").textContent = data.wedge_opportunity || "";
+    document.getElementById("founderMistake").textContent = data.founder_mistake || "";
+
+    const chipRow = document.getElementById("competitors");
+    chipRow.innerHTML = "";
+    (data.competitors || []).forEach(c => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.textContent = c;
+      chipRow.appendChild(chip);
+    });
+  }
+
+  async function analyze() {
+    const url = document.getElementById("urlInput").value.trim();
+    if (!url) return;
+
+    document.getElementById("errorMsg").style.display = "none";
+    document.getElementById("loading").style.display = "flex";
+    document.getElementById("analyzeBtn").disabled = true;
+
+    try {
+      const res = await fetch("/analyze", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ url }),
+      });
+
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.detail || "Analysis failed");
+
+      populate(data, false);
+      document.getElementById("resultDivider").scrollIntoView({ behavior: "smooth", block: "start" });
+    } catch (err) {
+      const errEl = document.getElementById("errorMsg");
+      errEl.textContent = err.message;
+      errEl.style.display = "block";
+    } finally {
+      document.getElementById("loading").style.display = "none";
+      document.getElementById("analyzeBtn").disabled = false;
+    }
+  }
+
+  document.getElementById("urlInput").addEventListener("keydown", e => {
+    if (e.key === "Enter") analyze();
+  });
+
+  // Theme toggle
+  function toggleTheme() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute("data-theme") === "dark";
+    html.setAttribute("data-theme", isDark ? "light" : "dark");
+    document.getElementById("themeLabel").textContent = isDark ? "Dark mode" : "Light mode";
+    document.getElementById("themeIcon").innerHTML = isDark
+      ? '<path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM8 13A5 5 0 1 1 8 3a5 5 0 0 1 0 10z"/>'
+      : '<path d="M8 3a5 5 0 1 0 4.33 7.5A6 6 0 1 1 8 3z"/>';
+  }
+</script>
+
+</body>
+</html>
