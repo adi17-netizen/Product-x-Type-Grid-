@@ -3,13 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Startup Matrix</title>
+  <title>Product × Market Type Grid</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Lora:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
     :root {
-      /* Anthropic brand */
       --dark:       #141413;
       --light:      #faf9f5;
       --mid-gray:   #b0aea5;
@@ -63,11 +62,12 @@
     /* HEADER */
     header {
       width: 100%;
-      padding: 20px 40px;
+      padding: 16px 32px;
       border-bottom: 1px solid var(--border);
-      display: flex;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
       align-items: center;
-      justify-content: space-between;
+      gap: 16px;
       position: sticky;
       top: 0;
       background: var(--bg);
@@ -86,31 +86,72 @@
       border-radius: 6px;
       background: var(--accent);
       display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
     }
 
     .logo-mark svg { width: 14px; height: 14px; fill: white; }
 
     .logo-text {
       font-family: 'Poppins', Arial, sans-serif;
-      font-size: 14px;
-      font-weight: 600;
+      font-size: 15px;
+      font-weight: 700;
       color: var(--text);
+      line-height: 1.3;
     }
 
-    .source-link {
+    .header-center {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .framework-btn {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1.5px solid var(--accent);
+      border-radius: 6px;
+      padding: 6px 14px;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      transition: background 0.2s, color 0.2s;
+      white-space: nowrap;
+    }
+
+    .framework-btn:hover {
+      background: var(--accent);
+      color: #fff;
+    }
+
+    .framework-btn svg { width: 11px; height: 11px; }
+
+    .framework-btn-sm {
       font-family: 'Poppins', Arial, sans-serif;
       font-size: 11px;
       font-weight: 500;
-      color: var(--muted);
+      color: var(--text2);
       text-decoration: none;
-      display: flex;
+      border: 1px solid var(--border2);
+      border-radius: 20px;
+      padding: 6px 12px;
+      display: inline-flex;
       align-items: center;
       gap: 5px;
-      transition: color 0.2s;
+      transition: border-color 0.2s, color 0.2s;
+      white-space: nowrap;
     }
 
-    .source-link:hover { color: var(--accent); }
-    .source-link svg { width: 11px; height: 11px; }
+    .framework-btn-sm:hover { border-color: var(--accent); color: var(--accent); }
+    .framework-btn-sm svg { width: 10px; height: 10px; }
+
+    .header-right {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
 
     .theme-toggle {
       display: flex;
@@ -138,17 +179,19 @@
       padding: 56px 24px 80px;
       display: flex;
       flex-direction: column;
-      gap: 48px;
+      gap: 32px;
     }
 
-    /* HERO */
+    /* HERO — centered */
     .hero {
       display: flex;
       flex-direction: column;
+      align-items: center;
       gap: 20px;
+      text-align: center;
     }
 
-    .hero-text h2 {
+    .hero h2 {
       font-family: 'Poppins', Arial, sans-serif;
       font-size: 38px;
       font-weight: 700;
@@ -157,24 +200,33 @@
       color: var(--text);
     }
 
-    .hero-text h2 em {
+    .hero h2 em {
       font-style: normal;
       color: var(--accent);
     }
 
-    .hero-text p {
+    .hero > p {
       font-size: 15px;
       color: var(--text2);
       line-height: 1.65;
-      margin-top: 8px;
-      max-width: 480px;
+      max-width: 520px;
     }
 
     /* INPUT */
+    .input-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      width: 100%;
+    }
+
     .input-row {
       display: flex;
       gap: 10px;
-      max-width: 580px;
+      width: 100%;
+      max-width: 600px;
+      margin: 0 auto;
     }
 
     .input-row input {
@@ -215,12 +267,49 @@
     .btn-analyze:active { transform: scale(0.98); }
     .btn-analyze:disabled { opacity: 0.4; cursor: not-allowed; }
 
+    /* Prominent input row */
+    .input-row-prominent input {
+      border: 2px solid var(--accent) !important;
+      box-shadow: 0 0 0 3px var(--accent-bg);
+    }
+    .input-row-prominent input:focus {
+      border-color: var(--accent) !important;
+      box-shadow: 0 0 0 5px var(--accent-bg) !important;
+    }
+
+    /* Framework inline toggle */
+    .framework-inline-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--accent);
+      padding: 6px 0;
+      transition: opacity 0.2s;
+      letter-spacing: 0.01em;
+    }
+    .framework-inline-toggle:hover { opacity: 0.75; }
+    .framework-inline-toggle svg { width: 12px; height: 12px; transition: transform 0.22s; }
+    .framework-inline-toggle.open svg { transform: rotate(180deg); }
+
+    .caveat {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+      letter-spacing: 0.01em;
+    }
+
     /* LOADING */
     .loading {
       display: none;
       align-items: center;
       gap: 12px;
-      padding: 16px 0;
+      padding: 12px 0 0;
     }
 
     .spinner {
@@ -249,8 +338,9 @@
       padding: 14px 18px;
       font-size: 13px;
       color: #c0392b;
-      max-width: 580px;
+      max-width: 600px;
       line-height: 1.5;
+      margin-top: 8px;
     }
 
     /* DIVIDER */
@@ -263,6 +353,7 @@
       font-family: 'Poppins', Arial, sans-serif;
       letter-spacing: 0.08em;
       text-transform: uppercase;
+      margin-bottom: -16px;
     }
 
     .divider::before, .divider::after {
@@ -284,7 +375,7 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      background: var(--accent-bg);
+      background: transparent;
       border: 1px solid var(--accent-border);
       border-radius: 8px;
       padding: 10px 16px;
@@ -292,43 +383,36 @@
       font-size: 12px;
       color: var(--accent);
       font-weight: 500;
+      width: 100%;
     }
 
     .demo-banner svg { width: 14px; height: 14px; flex-shrink: 0; }
 
-    /* COMPANY ROW */
-    .company-row {
+    /* COMPANY HEADER — centered */
+    .company-header {
       display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 20px;
-      flex-wrap: wrap;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      text-align: center;
     }
 
-    .company-info h3 {
+    .company-header h3 {
       font-family: 'Poppins', Arial, sans-serif;
-      font-size: 28px;
+      font-size: 32px;
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--text);
     }
 
-    .company-info p {
-      font-size: 14px;
-      color: var(--text2);
-      margin-top: 4px;
-      font-style: italic;
-    }
-
     .cell-badge {
       display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       background: var(--accent-bg);
       border: 1px solid var(--accent-border);
       border-radius: 8px;
-      padding: 10px 18px;
-      flex-shrink: 0;
+      padding: 8px 16px;
     }
 
     .cell-badge .cell-name {
@@ -336,18 +420,6 @@
       font-size: 15px;
       font-weight: 700;
       color: var(--accent);
-    }
-
-    .cell-badge .launch-tag {
-      font-family: 'Poppins', Arial, sans-serif;
-      font-size: 10px;
-      font-weight: 700;
-      background: var(--accent);
-      color: #fff;
-      border-radius: 4px;
-      padding: 3px 9px;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
     }
 
     /* SECTION LABEL */
@@ -361,11 +433,59 @@
       margin-bottom: 10px;
     }
 
+    /* TWO-COL LAYOUT (60/40) for snapshot + matrix */
+    .snapshot-matrix {
+      display: grid;
+      grid-template-columns: 30% 70%;
+      gap: 20px;
+      align-items: start;
+    }
+
+    /* COMPANY SNAPSHOT */
+    .snapshot-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 20px 22px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .snapshot-row {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+
+    .snapshot-label {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+    }
+
+    .snapshot-value {
+      font-size: 13px;
+      color: var(--text2);
+      line-height: 1.5;
+    }
+
+    .snapshot-value.italic { font-style: italic; color: var(--text); }
+
     /* MATRIX */
+    .matrix-container {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
     .matrix-wrap {
       display: flex;
-      gap: 10px;
-      align-items: center;
+      gap: 8px;
+      align-items: stretch;
     }
 
     .y-axis-label {
@@ -377,91 +497,99 @@
       letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--muted);
+      display: flex;
+      align-items: center;
     }
 
     .matrix-inner { flex: 1; }
 
     .x-labels {
       display: grid;
-      grid-template-columns: 88px repeat(3, 1fr);
-      gap: 6px;
-      margin-bottom: 6px;
+      grid-template-columns: 72px repeat(3, 1fr);
+      gap: 5px;
+      margin-bottom: 5px;
     }
 
     .x-label {
       font-family: 'Poppins', Arial, sans-serif;
       text-align: center;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-size: 13px;
+      font-weight: 700;
       color: var(--muted);
-      padding: 4px 0;
+      padding: 4px 2px;
     }
 
-    .grid-rows { display: flex; flex-direction: column; gap: 6px; }
+    /* Color each column header by ocean type */
+    .x-label.blue-ocean { color: #4a7cc7; }
+    .x-label.orange-ocean { color: #d97757; }
+    .x-label.red-ocean { color: #c0392b; }
+
+    .grid-rows { display: flex; flex-direction: column; gap: 5px; }
 
     .grid-row {
       display: grid;
-      grid-template-columns: 88px repeat(3, 1fr);
-      gap: 6px;
+      grid-template-columns: 72px repeat(3, 1fr);
+      gap: 5px;
       align-items: stretch;
     }
 
     .row-label {
       font-family: 'Poppins', Arial, sans-serif;
-      font-size: 9px;
-      font-weight: 600;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
+      font-size: 12px;
+      font-weight: 700;
       color: var(--muted);
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      padding-right: 10px;
+      padding-right: 8px;
+      text-align: right;
     }
 
     .cell {
-      aspect-ratio: 1.5;
+      min-height: 82px;
       border-radius: 7px;
-      border: 1px solid transparent;
+      border: 2px solid transparent;
       display: flex;
       flex-direction: column;
       align-items: center;
       justify-content: center;
-      gap: 3px;
-      padding: 8px 6px;
+      gap: 2px;
+      padding: 8px 5px;
       transition: all 0.2s;
       position: relative;
+      cursor: default;
     }
 
     .cell-lbl {
       font-family: 'Poppins', Arial, sans-serif;
-      font-size: 8px;
+      font-size: 11px;
       font-weight: 600;
-      letter-spacing: 0.04em;
       text-align: center;
-      line-height: 1.3;
+      line-height: 1.35;
     }
 
-    .cell-sub {
-      font-family: 'Poppins', Arial, sans-serif;
-      font-size: 8px;
-      font-weight: 800;
-      letter-spacing: 0.02em;
-    }
-
-    /* Active ring — white outline over the cell color */
     .cell.active {
-      box-shadow: 0 0 0 2px #fff, 0 0 0 4px currentColor, 0 6px 24px rgba(0,0,0,0.18);
-      z-index: 1;
       transform: scale(1.04);
+      box-shadow: 0 4px 20px rgba(0,0,0,0.18);
+      z-index: 1;
     }
 
-    /* CONFIDENCE */
+    .x-axis-label {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 9px;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      text-align: center;
+      padding-top: 4px;
+    }
+
+    /* GRID helpers */
     .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 16px; }
 
+    /* CARD */
     .card {
       background: var(--surface);
       border: 1px solid var(--border);
@@ -553,6 +681,265 @@
 
     .card.mistake .card-label { color: #c0392b; }
 
+    /* HERO PREVIEW */
+    .hero-preview {
+      width: 100%;
+      max-width: 660px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+    }
+
+    .mini-grid-wrap {
+      display: flex;
+      gap: 8px;
+      align-items: stretch;
+    }
+
+    .mini-y-label {
+      writing-mode: vertical-rl;
+      transform: rotate(180deg);
+      font-family: 'Poppins', sans-serif;
+      font-size: 8px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      display: flex;
+      align-items: center;
+    }
+
+    .mini-grid-inner { display: flex; flex-direction: column; gap: 5px; flex: 1; }
+
+    .mini-x-labels {
+      display: grid;
+      grid-template-columns: 68px repeat(3, 1fr);
+      gap: 5px;
+      margin-bottom: 2px;
+    }
+
+    .mini-x-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      text-align: center;
+      padding: 2px 4px;
+    }
+
+    .mini-x-label.blue-ocean  { color: #4a7cc7; }
+    .mini-x-label.orange-ocean { color: #d97757; }
+    .mini-x-label.red-ocean   { color: #c0392b; }
+
+    .mini-row {
+      display: grid;
+      grid-template-columns: 68px repeat(3, 1fr);
+      gap: 5px;
+    }
+
+    .mini-row-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--text2);
+      display: flex;
+      align-items: center;
+      justify-content: flex-end;
+      padding-right: 8px;
+    }
+
+    .mini-cell {
+      height: 52px;
+      border-radius: 7px;
+      border: 2px solid;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+
+    /* Explainer legend */
+    .explainer-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px 40px;
+      width: 100%;
+      max-width: 600px;
+    }
+
+    .explainer-col { display: flex; flex-direction: column; gap: 14px; }
+
+    .explainer-col-label {
+      font-family: 'Poppins', sans-serif;
+      font-size: 9px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--muted);
+      padding-bottom: 6px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .explainer-item { display: flex; flex-direction: column; gap: 2px; }
+
+    .explainer-name {
+      font-family: 'Poppins', sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .explainer-desc {
+      font-size: 11.5px;
+      color: var(--text2);
+      line-height: 1.5;
+      font-family: 'Lora', Georgia, serif;
+    }
+
+    /* FRAMEWORK RUBRIC */
+    .rubric-section {
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+
+    .rubric-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px 22px;
+      cursor: pointer;
+      background: var(--surface);
+      user-select: none;
+      transition: background 0.2s;
+    }
+
+    .rubric-header:hover { background: var(--surface2); }
+
+    .rubric-header-static {
+      padding: 16px 22px;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rubric-launch-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      user-select: none;
+      padding: 8px 0;
+    }
+
+    .rubric-launch-header:hover .rubric-section-title { color: var(--accent); }
+
+    .rubric-header-left {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .rubric-title {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 13px;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .rubric-subtitle {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 11px;
+      color: var(--muted);
+    }
+
+    .rubric-arrow {
+      font-size: 16px;
+      color: var(--muted);
+      transition: transform 0.25s;
+    }
+
+    .rubric-arrow.open { transform: rotate(180deg); }
+
+    .rubric-body {
+      display: none;
+      flex-direction: column;
+      gap: 24px;
+      padding: 22px;
+      background: var(--bg);
+      border-top: 1px solid var(--border);
+    }
+
+    .rubric-body.visible { display: flex; }
+
+    .rubric-section-title {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 10px;
+    }
+
+    .rubric-cards {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 12px;
+    }
+
+    .rubric-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 14px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .rubric-card-title {
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 12px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .rubric-card-body {
+      font-size: 12px;
+      color: var(--text2);
+      line-height: 1.6;
+    }
+
+    .rubric-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: 'Poppins', Arial, sans-serif;
+      font-size: 12px;
+    }
+
+    .rubric-table th {
+      text-align: left;
+      padding: 8px 12px;
+      font-weight: 700;
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--muted);
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .rubric-table td {
+      padding: 9px 12px;
+      color: var(--text2);
+      border-bottom: 1px solid var(--border);
+      vertical-align: top;
+      line-height: 1.5;
+    }
+
+    .rubric-table tr:last-child td { border-bottom: none; }
+    .rubric-table tr:nth-child(even) td { background: var(--bg2); }
+
     /* FOOTER */
     footer {
       padding: 24px;
@@ -565,12 +952,23 @@
       letter-spacing: 0.02em;
     }
 
-    @media (max-width: 640px) {
+    footer a {
+      color: var(--muted);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+
+    footer a:hover { color: var(--accent); }
+
+    @media (max-width: 700px) {
       .two-col, .three-col { grid-template-columns: 1fr; }
-      .company-row { flex-direction: column; }
-      header { padding: 16px 20px; }
+      .snapshot-matrix { grid-template-columns: 1fr; }
+      .rubric-cards { grid-template-columns: 1fr; }
+      header { padding: 14px 16px; grid-template-columns: 1fr auto; }
+      .header-center { display: none; }
       main { padding: 36px 16px 60px; }
-      .hero-text h2 { font-size: 28px; }
+      .hero h2 { font-size: 28px; }
     }
   </style>
 </head>
@@ -581,40 +979,83 @@
     <div class="logo-mark">
       <svg viewBox="0 0 16 16"><rect x="2" y="2" width="5" height="5" rx="1"/><rect x="9" y="2" width="5" height="5" rx="1"/><rect x="2" y="9" width="5" height="5" rx="1"/><rect x="9" y="9" width="5" height="5" rx="1"/></svg>
     </div>
-    <div class="logo-text">Startup Matrix</div>
+    <div class="logo-text">Product × Market Type Grid</div>
   </div>
-  <a class="source-link" href="https://sajithpai.com/which-of-these-9-product-x-market-type-categories-is-your-startup-in/" target="_blank" rel="noopener">
-    Read the framework
-    <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H5M10 2v5"/></svg>
-  </a>
-  <button class="theme-toggle" onclick="toggleTheme()">
-    <svg id="themeIcon" viewBox="0 0 16 16" fill="currentColor">
-      <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM8 13A5 5 0 1 1 8 3a5 5 0 0 1 0 10z"/>
-    </svg>
-    <span id="themeLabel">Dark mode</span>
-  </button>
+  <div class="header-center"></div>
+  <div class="header-right" style="gap:10px;">
+    <a class="framework-btn-sm" href="https://sajithpai.com/which-of-these-9-product-x-market-type-categories-is-your-startup-in/" target="_blank" rel="noopener">
+      Read the Original Article by @sajithpai
+      <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 10L10 2M10 2H5M10 2v5"/></svg>
+    </a>
+    <button class="theme-toggle" onclick="toggleTheme()">
+      <svg id="themeIcon" viewBox="0 0 16 16" fill="currentColor">
+        <path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM8 13A5 5 0 1 1 8 3a5 5 0 0 1 0 10z"/>
+      </svg>
+      <span id="themeLabel">Dark mode</span>
+    </button>
+  </div>
 </header>
 
 <main>
 
   <!-- HERO + INPUT -->
   <div class="hero">
-    <div class="hero-text">
-      <h2>Where does your startup <em>land?</em></h2>
-      <p>Enter a startup URL. We'll research it and place it on the Product × Market Type matrix to reveal your category, strategy, and launch approach.</p>
+    <h2>Where does your favourite startup <em>land?</em></h2>
+    <p>Enter any startup URL. We'll research it and place it on the Product × Market Type matrix to reveal your category, strategy, and launch approach.</p>
+
+    <div class="input-wrap">
+      <div class="input-row input-row-prominent">
+        <input type="text" id="urlInput" placeholder="e.g. stripe.com or notion.so" />
+        <button class="btn-analyze" id="analyzeBtn" onclick="analyze()">Analyze</button>
+      </div>
+      <span class="caveat">⚡ Analysis typically takes 5–10 seconds while we research the startup</span>
+      <div class="loading" id="loading">
+        <div class="spinner"></div>
+        <p>Researching startup and running analysis…</p>
+      </div>
+      <div class="error-msg" id="errorMsg"></div>
+
+      <!-- FRAMEWORK TOGGLE -->
+      <button class="framework-inline-toggle" onclick="toggleFrameworkCards()" id="frameworkToggleBtn">
+        Understand the framework
+        <svg id="frameworkToggleArrow" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="2"><path d="M2 4l4 4 4-4"/></svg>
+      </button>
+
+      <div id="frameworkCards" style="display:none;width:100%;max-width:720px;margin-top:4px;">
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px;">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+            <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;">🔥 Painkiller</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.6;">Hair-on-fire urgency. ICP pays immediately or uses manual workarounds to solve the problem. Even a rough solution finds instant traction.</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+            <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;">🦷 Toothpick</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.6;">A niggling irritant — not critical, but annoying. Users complain but haven't actively sought a dedicated solution. Coping mechanisms exist.</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+            <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:var(--text);margin-bottom:6px;">💊 Vitamin</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.6;">Nice to have. No urgency. Success requires creating a new behaviour or habit. Users only pay after experiencing the value firsthand.</div>
+          </div>
+        </div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px;">
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+            <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:#4a7cc7;margin-bottom:6px;">🔵 Blue Ocean</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.6;">No direct or indirect competitors. You are creating the category and the need. The market essentially didn't exist before you.</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+            <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:#d97757;margin-bottom:6px;">🟠 Orange Ocean</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.6;">No direct competitors, but indirect alternatives exist — manual processes, workarounds, or different-mechanism solutions serving the same need.</div>
+          </div>
+          <div style="background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:14px 16px;">
+            <div style="font-family:'Poppins',sans-serif;font-size:12px;font-weight:700;color:#c0392b;margin-bottom:6px;">🔴 Red Ocean</div>
+            <div style="font-size:11.5px;color:var(--text2);line-height:1.6;">At least two direct competitors with 10%+ market share each at time of launch. Search volume for the category is already meaningful.</div>
+          </div>
+        </div>
+      </div>
+
     </div>
-    <div class="input-row">
-      <input type="text" id="urlInput" placeholder="e.g. stripe.com or notion.so" />
-      <button class="btn-analyze" id="analyzeBtn" onclick="analyze()">Analyze</button>
-    </div>
-    <div class="loading" id="loading">
-      <div class="spinner"></div>
-      <p>Researching startup and running analysis…</p>
-    </div>
-    <div class="error-msg" id="errorMsg"></div>
   </div>
 
-  <div class="divider" id="resultDivider">Example · Stripe</div>
+  <div class="divider" id="resultDivider">Analysis</div>
 
   <!-- RESULT -->
   <div id="result">
@@ -624,82 +1065,118 @@
       This is a pre-loaded example analysis for Stripe. Enter any URL above to analyze a different startup.
     </div>
 
-    <div class="company-row">
-      <div class="company-info">
-        <h3 id="companyName">Stripe</h3>
-        <p id="tagline">Payment infrastructure for the internet — 7 lines of code to accept payments</p>
-      </div>
+    <!-- COMPANY NAME + BADGE — centered -->
+    <div class="company-header">
+      <h3 id="companyName">Stripe</h3>
       <div class="cell-badge">
         <span class="cell-name" id="cellName">Painkiller × Orange Ocean</span>
-        <span class="launch-tag" id="launchTag">ETP</span>
       </div>
     </div>
 
-    <!-- MATRIX -->
-    <div>
-      <div class="section-label">Product × Market Grid</div>
-      <div class="matrix-wrap">
-        <div class="y-axis-label">Product Type</div>
-        <div class="matrix-inner">
-          <div class="x-labels">
-            <div></div>
-            <div class="x-label">Blue Ocean</div>
-            <div class="x-label">Orange Ocean</div>
-            <div class="x-label">Red Ocean</div>
-          </div>
-          <div class="grid-rows" id="gridRows"></div>
+    <!-- SNAPSHOT + MATRIX -->
+    <div class="snapshot-matrix">
+      <!-- LEFT: Company Snapshot -->
+      <div class="snapshot-card">
+        <div class="section-label">Company Snapshot</div>
+        <div class="snapshot-row">
+          <div class="snapshot-label">What they do</div>
+          <div class="snapshot-value italic" id="tagline">Payment infrastructure for the internet — accept payments in 7 lines of code</div>
+        </div>
+        <div class="snapshot-row">
+          <div class="snapshot-label">Founded</div>
+          <div class="snapshot-value" id="foundingYear">2010</div>
+        </div>
+        <div class="snapshot-row">
+          <div class="snapshot-label">Sector</div>
+          <div class="snapshot-value" id="sector">Fintech / Payments</div>
+        </div>
+        <div class="snapshot-row" id="hqRow">
+          <div class="snapshot-label">HQ</div>
+          <div class="snapshot-value" id="hq">San Francisco, CA</div>
+        </div>
+        <div class="snapshot-row">
+          <div class="snapshot-label">Competitors at launch</div>
+          <div class="snapshot-value" id="competitorContext">Indirect (PayPal, Authorize.net)</div>
+        </div>
+        <div class="snapshot-row">
+          <div class="snapshot-label">Launch Strategy</div>
+          <div class="snapshot-value" id="launchStrategyName">Earliest Testable Product</div>
         </div>
       </div>
+
+      <!-- RIGHT: 3×3 Matrix -->
+      <div class="matrix-container">
+        <div class="section-label">Product × Market Grid</div>
+        <div class="matrix-wrap">
+          <div class="y-axis-label">Product Type →</div>
+          <div class="matrix-inner">
+            <div class="x-labels">
+              <div></div>
+              <div class="x-label blue-ocean">Blue Ocean</div>
+              <div class="x-label orange-ocean">Orange Ocean</div>
+              <div class="x-label red-ocean">Red Ocean</div>
+            </div>
+            <div class="grid-rows" id="gridRows"></div>
+          </div>
+        </div>
+        <div class="x-axis-label">← Market Type</div>
+      </div>
     </div>
 
-    <!-- CONFIDENCE -->
+    <!-- PRODUCT + MARKET CLASSIFICATION -->
     <div class="two-col">
       <div class="card">
         <div class="card-label">Product Classification</div>
         <div class="card-value" id="productConf">92%</div>
         <div class="card-tag" id="productType">Painkiller</div>
         <div class="bar-track"><div class="bar-fill" id="productBar" style="width:92%"></div></div>
-        <p class="card-body" id="productReason">Developers at startups were wasting days wrangling connectors to PayPal and Authorize.net. Accepting payments online required PCI compliance and weeks of integration — a genuine hair-on-fire problem for any company wanting to transact online.</p>
+        <p class="card-body" id="productReason">Developers were wasting days wrangling PayPal/Authorize.net connectors, dealing with PCI compliance burdens and opaque pricing. This was a genuine hair-on-fire problem with clear manual workarounds — classic Painkiller territory.</p>
       </div>
       <div class="card">
         <div class="card-label">Market Classification</div>
         <div class="card-value" id="marketConf">88%</div>
         <div class="card-tag" id="marketType">Orange Ocean</div>
         <div class="bar-track"><div class="bar-fill" id="marketBar" style="width:88%"></div></div>
-        <p class="card-body" id="marketReason">In 2010, PayPal and Authorize.net existed as incumbent payment processors, but no direct competitor offered a developer-first, API-native experience. Indirect competition existed; a direct comparator did not — classic Orange Ocean.</p>
+        <p class="card-body" id="marketReason">PayPal and Authorize.net existed in 2010 but were consumer/enterprise-first with no developer API. No direct competitor offered API-native payment processing. Indirect competition existed; a direct comparator did not — Orange Ocean.</p>
       </div>
     </div>
 
-    <!-- KEY INSIGHT -->
+    <!-- KEY INSIGHT — full width -->
     <div class="card accent-card">
       <div class="card-label">Key Insight</div>
-      <p class="card-body large" id="keyInsight">Stripe didn't enter payments — they entered developer experience. By ensuring card data never touched the merchant's servers and enabling payments in minutes with transparent pricing, they found a wedge incumbents were structurally unable to close.</p>
+      <p class="card-body large" id="keyInsight">Stripe didn't enter payments — they entered developer experience. By eliminating PCI burden and enabling integration in minutes, they exploited a wedge incumbents were structurally unable to close.</p>
     </div>
 
     <!-- PLAYBOOK + VC + WEDGE -->
     <div class="three-col">
       <div class="card">
         <div class="card-label">Playbook</div>
-        <p class="card-body" id="playbook">Launch a narrow product delivering the atomic unit of value: accept a payment. No subscriptions, no invoicing, no international support — just butter-smooth integration in 7 lines of code. Let desperate customers do the validation.</p>
+        <p class="card-body" id="playbook">Launch the atomic unit: accept a payment. No subscriptions, no invoicing, no international support — just butter-smooth 7-line integration. Let desperate developers pull you forward.</p>
       </div>
       <div class="card">
         <div class="card-label">VC Pitch Angle</div>
-        <p class="card-body" id="vcPitch">Show the manual workarounds developers use today — days of wrangling, PCI compliance burden, opaque pricing. Show willingness to pay. Demonstrate the atomic unit working end-to-end in minutes.</p>
+        <p class="card-body" id="vcPitch">Show the manual workarounds developers use today — days of wrangling, PCI burden, opaque pricing. Demonstrate the atomic unit working end-to-end in minutes.</p>
       </div>
       <div class="card">
         <div class="card-label">Wedge Opportunity</div>
-        <p class="card-body" id="wedge">Developer-first startups who found incumbent payment processors too painful to integrate — a segment incumbents were structurally unable to serve due to their enterprise-first, sales-led model.</p>
+        <p class="card-body" id="wedge">Developer-first startups who found incumbent payment processors too painful — a segment incumbents were structurally unable to serve due to their enterprise-first model.</p>
       </div>
     </div>
 
-    <!-- MISTAKE + COMPETITORS -->
+    <!-- EXAMPLES + COMPETITORS -->
     <div class="two-col">
-      <div class="card mistake">
-        <div class="card-label">Founder Mistake to Avoid</div>
-        <p class="card-body" id="founderMistake">Overbuilding before validation. Stripe launched US-only, with no subscriptions, no invoicing, and limited fraud detection. The pain was real enough that a narrow product was sufficient — resist the urge to build everything first.</p>
+      <div class="card">
+        <div class="card-label">Possible examples in this category</div>
+        <div class="chip-row" id="cellExamples">
+          <span class="chip">Stripe</span>
+          <span class="chip">PolicyBazaar</span>
+          <span class="chip">Airbnb</span>
+          <span class="chip">Razorpay</span>
+          <span class="chip">Dropbox</span>
+        </div>
       </div>
       <div class="card">
-        <div class="card-label">Known Competitors</div>
+        <div class="card-label">Known Competitors at Launch</div>
         <div class="chip-row" id="competitors">
           <span class="chip">PayPal</span>
           <span class="chip">Authorize.net</span>
@@ -709,68 +1186,190 @@
       </div>
     </div>
 
+    <!-- FRAMEWORK RUBRIC (collapsible) — visually separated -->
+    <div style="border-top: 2px solid var(--border); margin-top: 16px; padding-top: 32px;">
+      <div style="text-align:center;margin-bottom:16px;">
+        <span style="font-family:'Poppins',sans-serif;font-size:10px;font-weight:700;letter-spacing:0.12em;text-transform:uppercase;color:var(--muted);">Reference</span>
+      </div>
+    </div>
+    <div class="rubric-section">
+      <div class="rubric-header-static">
+        <div class="rubric-title">Understanding the Framework</div>
+        <div class="rubric-subtitle">A framework by Sajith Pai — the decision criteria used in this analysis</div>
+      </div>
+      <div class="rubric-body visible" id="rubricBody">
+
+        <!-- Launch Strategies — nested toggle -->
+        <div>
+          <div class="rubric-launch-header" onclick="toggleLaunchStrategies()">
+            <div class="rubric-section-title" style="margin-bottom:0;">Launch Strategies by Cell</div>
+            <span class="rubric-arrow" id="launchArrow">▾</span>
+          </div>
+          <div id="launchBody" style="display:none; margin-top:12px;">
+            <table class="rubric-table">
+              <thead>
+                <tr>
+                  <th>Cell</th>
+                  <th>Strategy</th>
+                  <th>What it means</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Blue / Orange Painkiller</td>
+                  <td><strong>Earliest Testable Product</strong></td>
+                  <td>Barebones atomic unit of value. Just enough to validate the pain and solution.</td>
+                </tr>
+                <tr>
+                  <td>Red Painkiller / Red Toothpick</td>
+                  <td><strong>Earliest Usable Product</strong></td>
+                  <td>Default category features + wedge differentiators for an underserved segment.</td>
+                </tr>
+                <tr>
+                  <td>Blue Toothpick / Blue Vitamin</td>
+                  <td><strong>Earliest Lovable Product</strong></td>
+                  <td>Must delight from day one. Find obsessed users. Create new behaviour.</td>
+                </tr>
+                <tr>
+                  <td>Orange Toothpick</td>
+                  <td><strong>Earliest Usable / Lovable Product</strong></td>
+                  <td>Find segment for whom this is a Painkiller; wedge against indirect competitors.</td>
+                </tr>
+                <tr>
+                  <td>Orange / Red Vitamin</td>
+                  <td><strong>Full-blown Product</strong></td>
+                  <td>Near-complete polished product matching incumbents plus delight features. Hardest path.</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </div>
+
   </div>
 </main>
 
-<footer>Based on the Product × Market Type framework · <a href="https://sajithpai.com/which-of-these-9-product-x-market-type-categories-is-your-startup-in/" target="_blank" rel="noopener" style="color:var(--muted);text-decoration:underline;text-underline-offset:3px;">Read the original article</a></footer>
+<footer>
+  Framework by <a href="https://x.com/sajithpai" target="_blank" rel="noopener">Sajith Pai</a> · <a href="https://sajithpai.com/which-of-these-9-product-x-market-type-categories-is-your-startup-in/" target="_blank" rel="noopener">Read the original article →</a> · Platform Designed by <a href="https://x.com/AdithyaS017" target="_blank" rel="noopener">Adithya Santhosh</a>
+</footer>
 
 <script>
-  const GRID = [
-    { row: "Painkiller", cols: ["Blue Ocean","Orange Ocean","Red Ocean"], launches: ["ETP","ETP","EUP"] },
-    { row: "Toothpick",  cols: ["Blue Ocean","Orange Ocean","Red Ocean"], launches: ["ELP","EUP/ELP","EUP"] },
-    { row: "Vitamin",    cols: ["Blue Ocean","Orange Ocean","Red Ocean"], launches: ["ELP","Full Prod","Full Prod"] },
-  ];
-
-  // Color per cell: bg, text, border — green (best) → amber → red (hardest)
-  const CELL_COLORS = {
-    "Painkiller|Blue Ocean":    { bg: "#d4edda", text: "#1a5c2e", border: "#a8d5b5" }, // deep green — rarest, best
-    "Painkiller|Orange Ocean":  { bg: "#c8e6c9", text: "#2e7d32", border: "#a5d6a7" }, // green — very attractive
-    "Painkiller|Red Ocean":     { bg: "#fff9c4", text: "#7a6000", border: "#ffe082" }, // yellow — competitive but viable
-    "Toothpick|Blue Ocean":     { bg: "#fff3e0", text: "#7a4200", border: "#ffcc80" }, // amber — needs delight
-    "Toothpick|Orange Ocean":   { bg: "#ffe0b2", text: "#7a3e00", border: "#ffb74d" }, // warm amber — middle ground
-    "Toothpick|Red Ocean":      { bg: "#ffe0b2", text: "#7a3e00", border: "#ffb74d" }, // warm amber — need wedge
-    "Vitamin|Blue Ocean":       { bg: "#fce4c8", text: "#7a3000", border: "#f4a460" }, // light coral — harder
-    "Vitamin|Orange Ocean":     { bg: "#ffd5c0", text: "#7a2800", border: "#ef9070" }, // coral-red — tough
-    "Vitamin|Red Ocean":        { bg: "#ffc8b8", text: "#7a1a00", border: "#e8705a" }, // red — hardest
+  // Ocean color scheme
+  const OCEAN_COLORS = {
+    "Blue Ocean":   { solid: "#4a7cc7", light: "rgba(74,124,199,0.10)", border: "#4a7cc7" },
+    "Orange Ocean": { solid: "#d97757", light: "rgba(217,119,87,0.10)", border: "#d97757" },
+    "Red Ocean":    { solid: "#c0392b", light: "rgba(192,57,43,0.10)",  border: "#c0392b" },
   };
+
+  const GRID = [
+    { row: "Painkiller", cols: ["Blue Ocean","Orange Ocean","Red Ocean"] },
+    { row: "Toothpick",  cols: ["Blue Ocean","Orange Ocean","Red Ocean"] },
+    { row: "Vitamin",    cols: ["Blue Ocean","Orange Ocean","Red Ocean"] },
+  ];
 
   function buildGrid(productType, marketType) {
     const container = document.getElementById("gridRows");
     container.innerHTML = "";
-    GRID.forEach(({ row, cols, launches }) => {
+    GRID.forEach(({ row, cols }) => {
       const rowEl = document.createElement("div");
       rowEl.className = "grid-row";
       const label = document.createElement("div");
       label.className = "row-label";
       label.textContent = row;
       rowEl.appendChild(label);
-      cols.forEach((col, i) => {
-        const key = `${row}|${col}`;
-        const color = CELL_COLORS[key] || { bg: "#f0f0f0", text: "#555", border: "#ccc" };
+      cols.forEach((col) => {
+        const oc = OCEAN_COLORS[col] || { solid: "#999", light: "#eee", border: "#999" };
         const isActive = row === productType && col === marketType;
         const cell = document.createElement("div");
         cell.className = "cell" + (isActive ? " active" : "");
-        cell.style.background = color.bg;
-        cell.style.borderColor = color.border;
-        cell.style.color = color.text;
-        if (isActive) cell.style.boxShadow = `0 0 0 2px #fff, 0 0 0 4px ${color.border}, 0 6px 24px rgba(0,0,0,0.15)`;
-        cell.innerHTML = `<span class="cell-lbl" style="color:${color.text}">${row}<br>${col}</span><span class="cell-sub" style="color:${color.text}">${launches[i]}</span>`;
+        if (isActive) {
+          // Active: filled background, white text
+          cell.style.background = oc.solid;
+          cell.style.borderColor = oc.solid;
+          cell.style.color = "#fff";
+          cell.style.boxShadow = `0 4px 20px rgba(0,0,0,0.20)`;
+        } else {
+          // Inactive: white/surface bg, colored border, colored text
+          cell.style.background = "var(--surface)";
+          cell.style.borderColor = oc.border;
+          cell.style.color = oc.solid;
+        }
+        cell.innerHTML = `<span class="cell-lbl">${row}<br>× ${col}</span>`;
         rowEl.appendChild(cell);
       });
       container.appendChild(rowEl);
     });
   }
 
+  // Examples from the article per cell
+  const CELL_EXAMPLES = {
+    "Painkiller|Blue Ocean": ["Vanta", "GoKwik", "PagerDuty", "Veeva", "Front"],
+    "Painkiller|Orange Ocean": ["Stripe", "PolicyBazaar", "Airbnb", "Razorpay", "Dropbox"],
+    "Painkiller|Red Ocean": ["Lyft", "Rapido 4W", "Meesho"],
+    "Toothpick|Blue Ocean": ["Coinbase", "Classplus"],
+    "Toothpick|Orange Ocean": ["Calendly", "Urban Company", "Licious"],
+    "Toothpick|Red Ocean": ["Zoom (preCOVID)", "Groww"],
+    "Vitamin|Blue Ocean": ["Calm", "CRED", "Headspace"],
+    "Vitamin|Orange Ocean": ["Duolingo", "Sharechat"],
+    "Vitamin|Red Ocean": ["TikTok", "Minimalist", "Superhuman"],
+  };
+
+  // Pre-load demo data
+  const DEMO = {
+    company_name: "Stripe",
+    tagline: "Payment infrastructure for the internet — accept payments in 7 lines of code",
+    founding_year: "2010",
+    sector: "Fintech / Payments",
+    hq: "San Francisco, CA",
+    product_type: "Painkiller",
+    market_type: "Orange Ocean",
+    cell: "Painkiller × Orange Ocean",
+    launch_strategy_name: "Earliest Testable Product",
+    product_confidence: 92,
+    market_confidence: 88,
+    product_reasoning: "Developers were wasting days wrangling PayPal/Authorize.net connectors, dealing with PCI compliance burdens and opaque pricing. This was a genuine hair-on-fire problem with clear manual workarounds — classic Painkiller territory.",
+    market_reasoning: "PayPal and Authorize.net existed in 2010 but were consumer/enterprise-first with no developer API. No direct competitor offered API-native payment processing. Indirect competition existed; a direct comparator did not — Orange Ocean.",
+    key_insight: "Stripe didn't enter payments — they entered developer experience. By eliminating PCI burden and enabling integration in minutes, they exploited a wedge incumbents were structurally unable to close.",
+    playbook: "Launch the atomic unit: accept a payment. No subscriptions, no invoicing, no international support — just butter-smooth 7-line integration. Let desperate developers pull you forward.",
+    vc_pitch: "Show the manual workarounds developers use today — days of wrangling, PCI burden, opaque pricing. Demonstrate the atomic unit working end-to-end in minutes.",
+    founder_mistake: "Overbuilding before validation. The pain was real enough that a narrow US-only product with no subscriptions was sufficient to achieve PMF.",
+    competitors: ["PayPal", "Authorize.net", "Braintree", "WePay"],
+    competitor_type: "indirect",
+    wedge_opportunity: "Developer-first startups who found incumbent payment processors too painful — a segment incumbents were structurally unable to serve due to their enterprise-first model."
+  };
+
   // Build demo grid on load
   buildGrid("Painkiller", "Orange Ocean");
 
   function populate(data, isDemo) {
     document.getElementById("demoBanner").style.display = isDemo ? "flex" : "none";
-    document.getElementById("resultDivider").textContent = isDemo ? "Example · Stripe" : "Analysis Result";
+    // Divider always stays "Analysis"
+
     document.getElementById("companyName").textContent = data.company_name || "—";
     document.getElementById("tagline").textContent = data.tagline || "";
     document.getElementById("cellName").textContent = data.cell || "—";
-    document.getElementById("launchTag").textContent = data.launch_strategy || "";
+    document.getElementById("foundingYear").textContent = data.founding_year || "—";
+    document.getElementById("sector").textContent = data.sector || "—";
+
+    const hq = data.hq || "";
+    const hqRow = document.getElementById("hqRow");
+    if (hq) {
+      document.getElementById("hq").textContent = hq;
+      hqRow.style.display = "";
+    } else {
+      hqRow.style.display = "none";
+    }
+
+    const ct = data.competitor_type || "unknown";
+    const ctLabel = ct === "none" ? "None" : ct === "indirect" ? "Indirect" : "Direct";
+    const competitorNames = (data.competitors || []).slice(0, 3).join(", ");
+    document.getElementById("competitorContext").textContent = competitorNames
+      ? `${ctLabel} (${competitorNames}${data.competitors.length > 3 ? "…" : ""})`
+      : ctLabel;
+
+    document.getElementById("launchStrategyName").textContent = data.launch_strategy_name || data.launch_strategy || "—";
 
     buildGrid(data.product_type, data.market_type);
 
@@ -792,7 +1391,17 @@
     document.getElementById("playbook").textContent = data.playbook || "";
     document.getElementById("vcPitch").textContent = data.vc_pitch || "";
     document.getElementById("wedge").textContent = data.wedge_opportunity || "";
-    document.getElementById("founderMistake").textContent = data.founder_mistake || "";
+    // Populate cell examples from article
+    const cellKey = `${data.product_type}|${data.market_type}`;
+    const examples = CELL_EXAMPLES[cellKey] || [];
+    const exampleRow = document.getElementById("cellExamples");
+    exampleRow.innerHTML = "";
+    examples.forEach(e => {
+      const chip = document.createElement("span");
+      chip.className = "chip";
+      chip.textContent = e;
+      exampleRow.appendChild(chip);
+    });
 
     const chipRow = document.getElementById("competitors");
     chipRow.innerHTML = "";
@@ -803,6 +1412,9 @@
       chipRow.appendChild(chip);
     });
   }
+
+  // Populate demo on load
+  populate(DEMO, true);
 
   async function analyze() {
     const url = document.getElementById("urlInput").value.trim();
@@ -839,6 +1451,15 @@
   });
 
   // Theme toggle
+  // Framework cards toggle
+  function toggleFrameworkCards() {
+    const cards = document.getElementById("frameworkCards");
+    const btn = document.getElementById("frameworkToggleBtn");
+    const isOpen = cards.style.display !== "none";
+    cards.style.display = isOpen ? "none" : "block";
+    btn.classList.toggle("open", !isOpen);
+  }
+
   function toggleTheme() {
     const html = document.documentElement;
     const isDark = html.getAttribute("data-theme") === "dark";
@@ -847,6 +1468,19 @@
     document.getElementById("themeIcon").innerHTML = isDark
       ? '<path d="M8 1a7 7 0 1 0 0 14A7 7 0 0 0 8 1zM8 13A5 5 0 1 1 8 3a5 5 0 0 1 0 10z"/>'
       : '<path d="M8 3a5 5 0 1 0 4.33 7.5A6 6 0 1 1 8 3z"/>';
+    // Rebuild grid to refresh cell colors for new theme
+    const pt = document.getElementById("productType").textContent;
+    const mt = document.getElementById("marketType").textContent;
+    if (pt && mt) buildGrid(pt, mt);
+  }
+
+  // Launch strategies toggle
+  function toggleLaunchStrategies() {
+    const body = document.getElementById("launchBody");
+    const arrow = document.getElementById("launchArrow");
+    const isOpen = body.style.display !== "none";
+    body.style.display = isOpen ? "none" : "block";
+    arrow.classList.toggle("open", !isOpen);
   }
 </script>
 
