@@ -226,8 +226,12 @@ MODELS = ["gemini-2.5-flash", "gemini-2.5-flash-lite", "gemini-2.0-flash-001"]
 
 def analyze_with_gemini(url: str) -> dict:
     # Let Gemini's own search grounding do all the research — no Jina pre-fetch needed
-    prompt = FRAMEWORK_PROMPT.format(startup_info=f"Startup URL: {url}")
-    full_prompt = f"Research the startup at {url} using Google Search, understand their business, founding year, competitors at launch, and product. Then classify them per the framework below.\n\n{prompt}"
+    is_url = url.startswith("http")
+    prompt = FRAMEWORK_PROMPT.format(startup_info=f"Startup: {url}")
+    if is_url:
+        full_prompt = f"Research the startup at {url} using Google Search, understand their business, founding year, competitors at launch, and product. Then classify them per the framework below.\n\n{prompt}"
+    else:
+        full_prompt = f"Research the startup called '{url}' using Google Search, understand their business, founding year, competitors at launch, and product. Then classify them per the framework below.\n\n{prompt}"
 
     last_error = None
     for model in MODELS:
@@ -265,12 +269,14 @@ def root():
 
 @app.post("/analyze")
 def analyze(req: AnalyzeRequest):
-    url = req.url.strip()
-    if not url.startswith("http"):
-        url = "https://" + url
+    query = req.url.strip()
+    # If it looks like a URL (has a dot and no spaces), treat as URL
+    # Otherwise treat as a plain company name and let Gemini search for it
+    if not query.startswith("http") and ("." in query and " " not in query):
+        query = "https://" + query
 
     try:
-        result = analyze_with_gemini(url)
+        result = analyze_with_gemini(query)
     except json.JSONDecodeError as e:
         raise HTTPException(status_code=500, detail=f"Failed to parse Gemini response: {str(e)}")
     except Exception as e:
