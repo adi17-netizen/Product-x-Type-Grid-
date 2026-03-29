@@ -1051,7 +1051,6 @@
       cols.forEach((col) => {
         const oc = OCEAN_COLORS[col] || { solid: "#999", border: "#999" };
         const isActive = row === productType && col === marketType;
-        const strat = CELL_STRATEGY[`${row}|${col}`] || "";
         const cell = document.createElement("div");
         cell.className = "cell" + (isActive ? " active" : "");
         if (isActive) {
@@ -1064,7 +1063,7 @@
           cell.style.borderColor = oc.border;
           cell.style.color = oc.solid;
         }
-        cell.innerHTML = `<span class="cell-lbl">${row}<br>× ${col}</span><span class="cell-strategy">${strat}</span>`;
+        cell.innerHTML = `<span class="cell-lbl">${row}<br>× ${col}</span>`;
         rowEl.appendChild(cell);
       });
       container.appendChild(rowEl);
